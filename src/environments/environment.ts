@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyCYA-9AV2xFPbx9rQFykSkgklzS3l6Qgfk",
+    authDomain: "flickering-fog.firebaseapp.com",
+    databaseURL: "https://flickering-fog.firebaseio.com",
+    projectId: "flickering-fog",
+    storageBucket: "flickering-fog.appspot.com",
+    messagingSenderId: "18032779050"
+  }
 };
 
 /*
