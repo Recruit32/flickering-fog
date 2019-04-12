@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href \"/\" && npx angular-cli-ghpages --dir dist --cname=aa.zzzxd.space"
+    "deploy-1": "ng build --prod --base-href '/flickering-fog/' && npx angular-cli-ghpages --dir dist/flickering-fog",
+    "deploy-2": "ng build --prod --base-href '/' && npx angular-cli-ghpages --dir dist/flickering-fog --cname=zzzxd.space"
   },
   "private": true,
   "dependencies": {
