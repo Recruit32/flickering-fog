@@ -1,0 +1,194 @@
+<div class="container">
+  <info-section h1="RxJS Library">
+    <ul>
+      <li>
+        <b bH c="ou">Reactive programming</b> is an async programming paradigm concerned with <span bH>data streams</span> and the propagation of change
+      </li>
+      <li>
+        <b bH c="ou">RxJS</b> (Reactive Extensions for JavaScript) is a library for reactive programming using <span bH>observables</span> that makes it easier to compose async or cb-based code
+      </li>
+    </ul>
+  </info-section>
+  <info-section h2="Observable creation fn">
+    <info-subsection h3="create observable out of a promise">
+      <button class="btn btn-primary btn-sm mb-1"
+              (click)="subscribeToData1()"
+              *ngIf="!data1Subscription">Subscribe!</button>
+      <p class="mb-1">{{ data1RespJson }}</p>
+      <p class="mb-1">{{ data1RespJsonVal }}</p>
+    </info-subsection>
+    <info-subsection h3="create observable that will publish a value on an interval">
+      <button class="btn btn-primary btn-sm mr-3 mb-1"
+              (click)="subscribeToSecondsCounter()"
+              *ngIf="!secondsCounterSubscription">Subscribe!</button>
+      <div *ngIf="secondsCounterSubscription">
+        <button class="btn btn-warning btn-sm mr-3 mb-1"
+                (click)="unsubscribeFromSecondsCounter()">Unsubscribe!</button>
+        <span class="p-1 border border-danger rounded" 
+              bH c="vu">{{ seconds }}</span>
+      </div>
+    </info-subsection>
+    <info-subsection h3="create observable that will publish mouse movements">
+      <div class="d-flex align-items-center justify-content-center mb-2"
+           [ngStyle]="{'width.px': 150, 'height.px': 150, 'border': mouseMovesSubscription ? '1px solid red' : '1px solid #ddd'}" #mouseBox>
+        <span class="p-2 rounded" bH *ngIf="mouseCoords">
+          ({{ mouseCoords[0] }}, {{ mouseCoords[1] }})
+        </span>
+      </div>
+      <button class="btn btn-primary btn-sm mr-3 mb-1"
+              (click)="subscribeToMouseMvmt()"
+              *ngIf="!mouseMovesSubscription">Subscribe!</button>
+      <button class="btn btn-warning btn-sm mr-3 mb-1"
+              (click)="unsubscribeFromMouseMvmt()"
+              *ngIf="mouseMovesSubscription">Unsubscribe!</button>    
+    </info-subsection>
+    <info-subsection h3="create observable that will create an AJAX request">
+      <button class="btn btn-primary btn-sm mr-3 mb-1"
+        (click)="subscribeToApiData()"
+        *ngIf="!apiDataSubscription">Subscribe!</button>
+      <div class="media" *ngIf="apiDataRespJSON">
+        <img class="mr-3" [src]="apiDataRespJSON.picture.thumbnail" alt="{{ apiDataRespJSON.name }}">
+        <div class="media-body">
+          <h5 class="mt-0">
+            {{ apiDataRespJSON.name.first }} {{ apiDataRespJSON.name.last }} ({{ apiDataRespJSON.dob.age }})
+          </h5>
+          <p class="mb-1">{{ apiDataRespJSON.dob.date | date }}, {{ apiDataRespJSON.gender }}</p>
+          <p class="mb-1">{{ apiDataRespJSON.location.street }} {{ apiDataRespJSON.location.city }}, {{ apiDataRespJSON.location.state }} {{ apiDataRespJSON.location.postcode }}</p>
+        </div>
+      </div>
+    </info-subsection>
+  </info-section>
+  <info-section h2="Operators">
+    <ul>
+      <li>
+        fns that build on observables foundation to enable sophisticated <span bH>manipulation of collections</span>
+      </li>
+      <li>
+        operators take config opt, and return fn that takes a source observable; when executing this returned fn, the operator <span bH c="oU">observes the source observable's emitted values, transforms them, and returns a new observable of those transformed values</span>
+      </li>
+    </ul>
+    <pre class="bg-light">
+    
+    import &#123; <span tC t="3">map</span> &#125; from 'rxjs/operators';
+    const nums = <span tC t="2">of</span>(1, 2, 3);
+
+    const squareValues = <span tC t="2">map</span>((val: number) => val * val);
+    const squaredNums = squareValues(nums);
+
+    squaredNums.<span tC t="4">subscribe</span>(x => console.log(x));
+    </pre>
+    <ul>
+      <li>
+        use pipes to link operators together; the <span bH>pipe()</span> fn takes as its args the fns you want to combine, and returns a new fn that, when executed, <span bH c="rU">runs the composed fns in a sequence</span>        
+      </li>
+      <li>
+        a set of operators applied to an observable is a <span bH>recipe</span> - a set of instructions for producing the values you're interested in; you need to call <span bH>subscribe()</span> to produce a result through the recipe
+      </li>
+    </ul>
+    <pre class="bg-light">
+
+    import &#123; <span tC t="3">filter, map</span> &#125; from 'rxjs/operators';
+    
+    const nums = <span tC t="2">of</span>(1, 2, 3, 4, 5);
+
+    <span tC t="1">// create a fn that accepts an observable</span>
+    const squareOddVals = <span tC t="2">pipe</span>(
+      <span tC t="2">filter</span>((n: number) => n % 2 !== 0),
+      <span tC t="2">map</span>(n => n * n)
+    );
+
+    <span tC t="1">// create an observable that will run the filter and map fns</span>
+    const squareOdd = squareOddValues(nums);
+
+    <span tC t="1">// subscribe to run the combined fns</span>
+    sqaureOdd.<span tC t="4">subscribe</span>(x => console.log(x));
+    </pre>
+    <ul>
+      <li><span bH>pipe()</span> is also a method on the RxJS observable</li>
+    </ul>
+    <pre class="bg-light">
+    
+    import &#123; <span tC t="3">filter, map</span> &#125; from 'rxjs/operators';
+
+    const squareOdd = <span tC t="2">of</span>(1, 2, 3, 4, 5)
+      <span tC t="4">.pipe</span>(
+        <span tC t="2">filter</span>(n => n % 2 !== 0),
+        <span tC t="2">map</span>(n => n * n)
+      );
+
+    squareOdd.<span tC t="4">subscribe</span>(x => console.log(x));
+    </pre>
+  </info-section>
+
+  <info-section h2="Common Operators">
+    <table>
+      <thead>
+        <tr>
+          <th>AREA</th>
+          <th>OPERATORS</th>
+        </tr>  
+      </thead>
+      <tbody>
+        <tr>
+          <td>Creation</td>
+          <td>from, fromEvent, of</td>
+        </tr>
+        <tr>
+          <td>Combination</td>
+          <td>combineLatest, concat, merge, startWith, withLatestFrom, zip</td>
+        </tr>
+        <tr>
+          <td>Filtering</td>
+          <td>debounceTime, distinctUntilChanged, filter, take, takeUntil</td>
+        </tr>
+        <tr>
+          <td>Transformation</td>
+          <td>bufferTime, concatMap, map, mergeMap, scan, switchMap</td>
+        </tr>
+        <tr>
+          <td>Utility</td>
+          <td>tap</td>
+        </tr>
+        <tr>
+          <td>Multicasting</td>
+          <td>share</td>
+        </tr>
+      </tbody>
+    </table>
+  </info-section>
+  <info-section h2="Error Handling">
+    <ul>
+      <li>
+        in addition to the <span bH>error()</span> handler you provide on subscription, RxJS provides the <span bH c="g">catchError</span> operator that lets you handle known errors in the observable recipe
+      </li>
+      <li>
+        for instance, if you have an observable that makes an API request; if the server returns an error or the value doesn't exsit, an error is produced; if you catch this error and supply a default value, your stream contines to process values rather than erroring out
+      </li>
+      <li>
+        the <span bH c="g">retry</span> operator lets you retry a failed request
+      </li>
+      <li>
+        use before catchError operator; it resubscribes to the original source observable, which can then re-run full sequence of actions that resulted in error; if this includes HTTP req, it will retry that req
+      </li>
+      <li>
+        do not retry authentication req, since thse should only be initiated by user action; also don't want to lock out user accounts
+      </li>
+    </ul>
+    <pre class="bg-light">
+    
+    import &#123; ajax &#125; from 'rxjs/ajax';
+    import &#123; map, catchError &#125; from 'rxjs/operators';
+
+    <span tC t="1">// return "response" from API; if error, return empty array</span>
+    const apiData = ajax('/api/data').pipe(
+      <span tC t="2">retry</span>(3), // retry up to 3 times before failing
+      map(res => &#123;
+        if (!res.response) &#123;
+          throw new Error('Value expected!');
+        &#125;
+      &#125;),
+      <span tC t="2">catchError</span>(err => of([]))
+    );
+    </pre>
+  </info-section>
+</div>
