@@ -1,6 +1,4 @@
-<div class="border">
-  HELLO WORLD
-</div>
+<main-nav></main-nav>
 
 <ul>
   <li *ngFor="let item of items | async">
@@ -8,8 +6,30 @@
   </li>
 </ul>
 
+<button routerLink="">Home</button>
+<!-- <button routerLink="/demo/gastracker">Gastracker</button> -->
 <button routerLink="/learn/observables">Observables</button>
 <button routerLink="/learn/observables/rxjs">Rxjs</button>
-<button routerLink="">Home</button>
+
+<!--
+<div *ngIf="authService.isLoggedIn()">
+  <button class="btn btn-primary" (click)="authService.logout()">Logout</button>
+</div>
+<div class="p-3 border border-danger">
+  <input type="text" class="form-control mb-2" placeholder="Email" #userEmail1 required autofocus>
+  <input type="password" class="form-control mb-2" placeholder="Password" #userPassword1 required>
+  <button class="btn btn-sm btn-primary mb-1"
+  (click)="authService.signup(userEmail1.value, userPassword1.value)">Signup</button>
+</div>
+<p>
+  dummy login: dummy@zzzxd.space | password
+</p>
+<div class="p-3 border border-warning">
+  <input type="text" class="form-control mb-2" placeholder="Email" #userEmail required autofocus>
+  <input type="password" class="form-control mb-2" placeholder="Password" #userPassword required>
+  <button class="btn btn-sm btn-primary mb-1"
+  (click)="authService.login(userEmail.value, userPassword.value)">Login</button>
+</div>
+-->
 
 <router-outlet></router-outlet>

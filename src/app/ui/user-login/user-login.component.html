@@ -1,0 +1,16 @@
+<div>
+  <h1>{{ this.constructor.name }}</h1>
+  <div *ngIf="!(auth.user | async); else alreadyLoggedIn">
+    <button (click)="signInWithGoogle()" class="button btn-social btn-google">
+      <i class="fa fa-google fa-lg"></i> Connect Google
+    </button>
+    <button (click)="signInAnonymously()" class="button button-info">
+      <i class="fa fa-user-secret fa-lg"></i> Connect Anonymously
+    </button>
+  </div>
+  <ng-template #alreadyLoggedIn>
+    <p>
+      already logged in
+    </p>
+  </ng-template>
+</div>
